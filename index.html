@@ -875,11 +875,148 @@
     letter-spacing: 1px;
   }
 
-  @media (max-width: 768px) {
+  /* ── HAMBURGER BUTTON ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 26px;
+    height: 2.5px;
+    background: var(--black);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+  /* ── MOBILE DRAWER ── */
+  .nav-drawer {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--cream);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .nav-drawer.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .nav-drawer a {
+    text-decoration: none;
+    color: var(--black);
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: -1px;
+    position: relative;
+  }
+  .nav-drawer a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 3px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .nav-drawer a:hover::after { width: 100%; }
+  .nav-drawer-logo {
+    position: absolute;
+    top: 1.5rem; left: 2rem;
+    font-weight: 900;
+    font-size: 1.3rem;
+  }
+  .nav-drawer-logo span { color: var(--gold); }
+
+  /* ── TABLET (≤900px) ── */
+  @media (max-width: 900px) {
     .hero-deco { display: none; }
-    .about-grid, .blog-content, .fun-grid { grid-template-columns: 1fr; }
+    .personal-layout { grid-template-columns: 1fr; }
+    .blog-content { grid-template-columns: 1fr; }
+    .counter-strip { gap: 2rem; }
+  }
+
+  /* ── MOBILE (≤768px) ── */
+  @media (max-width: 768px) {
+    /* cursor off on touch */
+    .cursor, .cursor-dot { display: none; }
+    body { cursor: auto; }
+
+    /* nav */
+    nav { padding: 1rem 1.5rem; }
     nav ul { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-drawer { display: flex; }
+
+    /* sections */
     section { padding: 4rem 1.5rem; }
+    #hero { padding: 7rem 1.5rem 4rem; min-height: auto; }
+
+    /* hero */
+    .hero-title { font-size: 3.2rem; letter-spacing: -2px; }
+    .hero-subtitle { font-size: 0.95rem; }
+    .hero-btns { flex-direction: column; }
+    .hero-btns .btn { text-align: center; }
+    .star { display: none; }
+
+    /* about */
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .section-title { font-size: 2.2rem; letter-spacing: -1px; }
+    .counter-strip { gap: 1.5rem; flex-wrap: wrap; }
+    .counter-num { font-size: 2.5rem; }
+
+    /* awards stacking */
+    .award-badge { flex-wrap: wrap; }
+
+    /* projects */
+    .projects-grid { grid-template-columns: 1fr; }
+
+    /* personal */
+    .personal-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .personal-text .big-quote { font-size: 1.2rem; }
+    .bookclub-features { grid-template-columns: 1fr; }
+
+    /* blog */
+    .blog-content { grid-template-columns: 1fr; gap: 2rem; }
+
+    /* fun */
+    .fun-grid { grid-template-columns: 1fr; }
+    .fun-card { padding: 2rem 1.5rem; }
+
+    /* contact */
+    #contact > div[style*="grid"] { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+    /* footer */
+    footer { flex-direction: column; text-align: center; gap: 1.5rem; padding: 2rem 1.5rem; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+  }
+
+  /* ── SMALL MOBILE (≤420px) ── */
+  @media (max-width: 420px) {
+    .hero-title { font-size: 2.6rem; }
+    .section-title { font-size: 1.9rem; }
+    nav { padding: 0.9rem 1.2rem; }
+    .nav-logo { font-size: 1.1rem; }
+    .persona-pills { gap: 0.4rem; }
+    .persona-pill { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+    .bookclub-card { padding: 1.75rem; }
+    .hero-btns .btn { width: 100%; justify-content: center; }
+    .deco-card { width: 120px; }
   }
 </style>
 </head>
@@ -888,6 +1025,17 @@
 <!-- Custom Cursor -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-logo">recspert<span>✦</span></div>
+  <a href="#about" class="drawer-link">About</a>
+  <a href="#projects" class="drawer-link">Projects</a>
+  <a href="#personal" class="drawer-link">Building</a>
+  <a href="#blog" class="drawer-link">Blog</a>
+  <a href="#fun" class="drawer-link">Fun Stuff</a>
+  <a href="#contact" class="drawer-link">Contact</a>
+</div>
 
 <!-- Nav -->
 <nav>
@@ -900,6 +1048,9 @@
     <li><a href="#fun">Fun Stuff</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- Hero -->
@@ -1287,35 +1438,73 @@
     <a href="#fun">Fun Stuff</a>
     <a href="#contact">Contact</a>
   </div>
-  <div style="font-size:0.8rem;opacity:0.4;font-weight:700">© 2026 Ashwaq Salim · Made with ✦ & Python</div>
+  <div style="font-size:0.8rem;opacity:0.4;font-weight:700">© 2025 Ashwaq Salim · Made with ✦ & Python</div>
 </footer>
 
 <script>
-  // Custom cursor
+  // Disable custom cursor on touch devices
+  const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+  // Custom cursor (desktop only)
   const cursor = document.getElementById('cursor');
   const cursorDot = document.getElementById('cursorDot');
   let mouseX = 0, mouseY = 0;
   let curX = 0, curY = 0;
 
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
+  if (!isTouchDevice()) {
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+
+    function animateCursor() {
+      curX += (mouseX - curX) * 0.15;
+      curY += (mouseY - curY) * 0.15;
+      cursor.style.left = (curX - 10) + 'px';
+      cursor.style.top = (curY - 10) + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button, .speaking-card, .project-card, .fun-card, .blog-post-preview, .persona-pill, .bookclub-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
+      el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+    });
+  } else {
+    // hide cursor elements on touch
+    cursor.style.display = 'none';
+    cursorDot.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const navDrawer = document.getElementById('navDrawer');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = navDrawer.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
   });
 
-  function animateCursor() {
-    curX += (mouseX - curX) * 0.15;
-    curY += (mouseY - curY) * 0.15;
-    cursor.style.left = (curX - 10) + 'px';
-    cursor.style.top = (curY - 10) + 'px';
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
+  // Close drawer on link click
+  document.querySelectorAll('.drawer-link').forEach(link => {
+    link.addEventListener('click', () => {
+      navDrawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
 
-  document.querySelectorAll('a, button, .speaking-card, .project-card, .fun-card, .blog-post-preview, .persona-pill, .bookclub-card').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
-    el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+  // Close drawer on outside click
+  navDrawer.addEventListener('click', e => {
+    if (e.target === navDrawer) {
+      navDrawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    }
   });
 
   // Scroll reveal
