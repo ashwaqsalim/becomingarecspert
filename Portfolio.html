@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Becoming a RecSpert ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --black: #1a1a1a;
+    --gold: #f0c040;
+    --dark-cream: #ede8dc;
+    --accent: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--black);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 20px; height: 20px;
+    border: 2px solid var(--black);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(245,240,232,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--black);
+  }
+
+  .nav-logo {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    color: var(--black);
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  nav ul li a:hover::after { width: 100%; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    max-width: 700px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: var(--black);
+    color: var(--cream);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideUp 0.6s 0.1s ease both;
+  }
+
+  .hero-title .highlight {
+    color: var(--gold);
+    -webkit-text-stroke: 2px var(--black);
+    paint-order: stroke fill;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.6;
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+    opacity: 0.8;
+    animation: fadeSlideUp 0.6s 0.2s ease both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeSlideUp 0.6s 0.3s ease both;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    cursor: none;
+  }
+
+  .btn-primary {
+    background: var(--black);
+    color: var(--cream);
+    border: 2px solid var(--black);
+  }
+  .btn-primary:hover {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--black);
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0 var(--black);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+  }
+  .btn-secondary:hover {
+    background: var(--black);
+    color: var(--cream);
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+  }
+
+  /* Floating decorations */
+  .hero-deco {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    animation: fadeSlideUp 0.6s 0.4s ease both;
+  }
+
+  .deco-card {
+    background: var(--black);
+    color: var(--cream);
+    padding: 1.5rem;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 140px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .deco-card:hover { transform: rotate(-3deg) scale(1.05); }
+  .deco-card .num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+  .deco-card:nth-child(2) { transform: rotate(5deg); margin-top: 2rem; }
+  .deco-card:nth-child(2):hover { transform: rotate(2deg) scale(1.05); }
+  .deco-card:nth-child(3) { transform: rotate(-3deg); }
+  .deco-card:nth-child(3):hover { transform: rotate(-6deg) scale(1.05); }
+  .deco-card:nth-child(4) { transform: rotate(4deg); margin-top: -1rem; }
+  .deco-card:nth-child(4):hover { transform: rotate(1deg) scale(1.05); }
+
+  /* Stars scattered */
+  .star {
+    position: absolute;
+    animation: spin 8s linear infinite;
+  }
+  .star svg { fill: var(--black); }
+  .star.gold svg { fill: var(--gold); }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* Marquee strip */
+  .marquee-strip {
+    background: var(--black);
+    color: var(--cream);
+    padding: 1rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+  }
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 20s linear infinite;
+    gap: 3rem;
+  }
+  .marquee-inner span {
+    font-weight: 900;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .marquee-inner .dot { color: var(--gold); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Sections */
+  section {
+    padding: 6rem 3rem;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: var(--black);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 3rem;
+  }
+
+  /* About */
+  #about { background: var(--dark-cream); border-top: 2px solid var(--black); border-bottom: 2px solid var(--black); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .award-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--black);
+    color: var(--cream);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    font-weight: 800;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+  }
+  .award-badge:hover { transform: rotate(-2deg) scale(1.03); }
+  .award-badge .trophy { font-size: 1.5rem; }
+
+  .speaking-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .speaking-card {
+    background: var(--cream);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s ease;
+    cursor: default;
+  }
+  .speaking-card:hover {
+    background: var(--black);
+    color: var(--cream);
+    transform: translateX(8px);
+  }
+  .speaking-card:hover .card-icon { background: var(--gold); color: var(--black); }
+  .card-icon {
+    width: 48px; height: 48px;
+    background: var(--black);
+    color: var(--cream);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .card-title { font-weight: 800; font-size: 0.95rem; }
+  .card-sub { font-size: 0.8rem; opacity: 0.6; font-weight: 600; }
+
+  /* Projects */
+  #projects { background: var(--cream); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--black);
+    color: var(--cream);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(240,192,64,0.15) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-card:hover { transform: translateY(-8px); }
+
+  .project-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .project-title {
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.75;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background: rgba(240,192,64,0.2);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .project-scale {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  /* Personal Projects */
+  #personal {
+    background: var(--black);
+    color: var(--cream);
+    border-top: 2px solid var(--black);
+  }
+  #personal .section-label { color: var(--cream); opacity: 0.4; }
+  #personal .section-title { color: var(--cream); }
+
+  .personal-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .bookclub-card {
+    background: var(--cream);
+    color: var(--black);
+    border-radius: 28px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bookclub-card::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 160px; height: 160px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0.25;
+  }
+
+  .bookclub-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .bookclub-logo {
+    width: 64px; height: 64px;
+    background: var(--black);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .bookclub-name {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .bookclub-tagline {
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0.5;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .founding-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gold);
+    color: var(--black);
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .founding-badge::before { content: '⚡'; }
+
+  .bookclub-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 2rem;
+  }
+
+  .persona-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .persona-pill {
+    background: var(--black);
+    color: var(--cream);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    transition: all 0.2s ease;
+    cursor: default;
+  }
+  .persona-pill:hover {
+    background: var(--gold);
+    color: var(--black);
+    transform: scale(1.05) rotate(-2deg);
+  }
+
+  .bookclub-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    opacity: 0.7;
+  }
+  .feature-item::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+
+  .wip-bar {
+    margin-top: 0.5rem;
+  }
+  .wip-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 800;
+    opacity: 0.5;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .wip-bar-track {
+    height: 6px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  .wip-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--black), var(--gold));
+    border-radius: 50px;
+    width: 0;
+    transition: width 1.5s ease;
+  }
+  .wip-bar-fill.animated { width: 35%; }
+
+  .personal-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    font-weight: 600;
+    opacity: 0.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .personal-text .big-quote {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1.3;
+    opacity: 1;
+    letter-spacing: -0.5px;
+    border-left: 4px solid var(--gold);
+    padding-left: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .stack-chip {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--cream);
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Blog */
+  #blog { background: var(--black); color: var(--cream); border-top: 2px solid var(--black); }
+  #blog .section-title { color: var(--cream); }
+  #blog .section-label { color: var(--cream); opacity: 0.5; }
+
+  .blog-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .blog-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .medium-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--gold);
+    color: var(--black);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: none;
+  }
+  .medium-btn:hover {
+    transform: translateY(-3px) rotate(-2deg);
+    box-shadow: 4px 4px 0 rgba(255,255,255,0.3);
+  }
+
+  .blog-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .blog-post-preview {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s ease;
+    cursor: default;
+  }
+  .blog-post-preview:hover {
+    background: rgba(240,192,64,0.1);
+    border-color: var(--gold);
+    transform: translateX(8px);
+  }
+  .blog-post-preview .post-cat {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .blog-post-preview .post-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+
+  /* Fun */
+  #fun { background: var(--cream); }
+
+  .fun-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .fun-card {
+    border: 3px solid var(--black);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: default;
+    background: var(--cream);
+  }
+
+  .fun-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 0;
+    background: var(--black);
+    transition: height 0.4s ease;
+    z-index: 0;
+  }
+  .fun-card:hover::after { height: 100%; }
+  .fun-card:hover { color: var(--cream); }
+  .fun-card:hover .fun-icon { background: var(--gold); color: var(--black); }
+  .fun-card > * { position: relative; z-index: 1; }
+
+  .fun-icon {
+    width: 80px; height: 80px;
+    background: var(--black);
+    color: var(--cream);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .fun-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 0.75rem;
+  }
+
+  .fun-desc {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+  .fun-card:hover .fun-desc { opacity: 0.8; }
+
+  /* Fun interactive skating animation */
+  .skate-path {
+    position: absolute;
+    bottom: 10px; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .fun-card:hover .skate-path { opacity: 1; animation: skateWave 1s ease infinite; }
+  @keyframes skateWave {
+    0%, 100% { transform: scaleX(0.5); }
+    50% { transform: scaleX(1); }
+  }
+
+  /* Footer */
+  footer {
+    background: var(--black);
+    color: var(--cream);
+    padding: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid var(--gold);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: -1px;
+  }
+  .footer-logo span { color: var(--gold); }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .footer-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* Animations */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Interactive counter */
+  .counter-strip {
+    display: flex;
+    gap: 4rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+  .counter-item { text-align: left; }
+  .counter-num {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--black);
+  }
+  .counter-num .plus { color: var(--gold); }
+  .counter-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-deco { display: none; }
+    .about-grid, .blog-content, .fun-grid { grid-template-columns: 1fr; }
+    nav ul { display: none; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">recspert<span>✦</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#personal">Building</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#fun">Fun Stuff</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <!-- Scattered stars -->
+  <div class="star gold" style="top:15%;left:10%;width:24px;animation-duration:6s">
+    <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+  </div>
+  <div class="star" style="top:25%;left:60%;width:18px;animation-duration:10s;animation-direction:reverse">
+    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 0l1 11h11l-9 6 3 11-6-8-6 8 3-11-9-6h11z"/></svg>
+  </div>
+  <div class="star gold" style="bottom:25%;right:15%;width:30px;animation-duration:12s">
+    <svg viewBox="0 0 24 24" width="30" height="30"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+  </div>
+  <div class="star" style="bottom:40%;left:5%;width:14px;animation-duration:8s;animation-direction:reverse">
+    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 0l1 11h11l-9 6 3 11-6-8-6 8 3-11-9-6h11z"/></svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-tag">✦ Data Scientist & Speaker</div>
+    <h1 class="hero-title">
+      Becoming<br>a <span class="highlight">RecSpert</span>
+    </h1>
+    <p class="hero-subtitle">Hi, I'm <strong>Ashwaq Salim</strong> — a Recommender Systems Expert (RecSpert ✦). Data Scientist, public speaker, Early Tech Champion 🏆 — breaking down complex ML for the next gen.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">See My Work ✦</a>
+      <a href="https://medium.com/@becomingarecspert" target="_blank" class="btn btn-secondary">Read My Blog →</a>
+    </div>
+  </div>
+
+  <div class="hero-deco">
+    <div class="deco-card">
+      <span class="num">14M</span>
+      Customers served
+    </div>
+    <div class="deco-card">
+      <span class="num">3+</span>
+      RecSys models
+    </div>
+    <div class="deco-card">
+      <span class="num">🏆</span>
+      Early Tech Champion
+    </div>
+    <div class="deco-card">
+      <span class="num">🎤</span>
+      Public Speaker
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Collaborative Filtering</span><span class="dot">✦</span>
+    <span>TF-IDF</span><span class="dot">✦</span>
+    <span>Word2Vec</span><span class="dot">✦</span>
+    <span>Neural Collab Filtering</span><span class="dot">✦</span>
+    <span>Two Tower Models</span><span class="dot">✦</span>
+    <span>14M Customers</span><span class="dot">✦</span>
+    <span>Recommender Systems</span><span class="dot">✦</span>
+    <span>She Can Code</span><span class="dot">✦</span>
+    <span>Collaborative Filtering</span><span class="dot">✦</span>
+    <span>TF-IDF</span><span class="dot">✦</span>
+    <span>Word2Vec</span><span class="dot">✦</span>
+    <span>Neural Collab Filtering</span><span class="dot">✦</span>
+    <span>Two Tower Models</span><span class="dot">✦</span>
+    <span>14M Customers</span><span class="dot">✦</span>
+    <span>Recommender Systems</span><span class="dot">✦</span>
+    <span>She Can Code</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="section-label">✦ who am i</div>
+  <h2 class="section-title">The Human<br>Behind the Recs</h2>
+
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>Hey! I'm <strong>Ashwaq Salim</strong> — a Data Scientist specialising in <strong>Recommender Systems</strong> (RecSpert = Recommender Systems Expert). My real passion? Making the complex world of ML accessible to everyone. I've spoken at schools, colleges, participated in outreach programs like <strong>Cajigo</strong>, spoken at the <strong>BCS Institute</strong>, Manchester meetups, and anywhere people are hungry to learn about the world of recommendation systems.</p>
+      <p>I love breaking down my early career journey for students and tech-curious folks who think data science might be "too hard" or "not for them." Spoiler: it's for everyone. I've also been a <strong>recipient and mentor</strong> in the <strong>AWS All Builders Welcome Program</strong> — bridging the gap between early-career individuals and tech, promoting inclusivity and breaking down barriers.</p>
+      <div class="award-badge">
+        <span class="trophy">🏆</span>
+        <div>
+          <div style="font-size:0.7rem;opacity:0.6;font-weight:700;letter-spacing:1px;text-transform:uppercase">She Can Code Award</div>
+          <div>Early Tech Champion</div>
+        </div>
+      </div>
+      <div class="award-badge" style="margin-top:0.75rem">
+        <span class="trophy">⭐</span>
+        <div>
+          <div style="font-size:0.7rem;opacity:0.6;font-weight:700;letter-spacing:1px;text-transform:uppercase">WIT Awards 2025</div>
+          <div>Rising Star Nominee</div>
+        </div>
+      </div>
+      <div class="award-badge" style="margin-top:0.75rem">
+        <span class="trophy">🌍</span>
+        <div>
+          <div style="font-size:0.7rem;opacity:0.6;font-weight:700;letter-spacing:1px;text-transform:uppercase">MENA ML Winter School 2025 · Qatar</div>
+          <div>Competitively Selected</div>
+        </div>
+      </div>
+      <div class="award-badge" style="margin-top:0.75rem">
+        <span class="trophy">☁️</span>
+        <div>
+          <div style="font-size:0.7rem;opacity:0.6;font-weight:700;letter-spacing:1px;text-transform:uppercase">AWS All Builders Welcome</div>
+          <div>Recipient & Mentor</div>
+        </div>
+      </div>
+
+      <div class="counter-strip">
+        <div class="counter-item">
+          <div class="counter-num" data-target="14" data-suffix="M<span class='plus'>+</span>">0</div>
+          <div class="counter-label">Customers in prod</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num" data-target="3" data-suffix="+">0</div>
+          <div class="counter-label">RecSys Models</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="speaking-cards">
+      <div style="font-weight:800;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:0.5rem">✦ Speaking & Community</div>
+      <div class="speaking-card">
+        <div class="card-icon">🎓</div>
+        <div>
+          <div class="card-title">Schools, Colleges & Outreach</div>
+          <div class="card-sub">Cajigo, BCS Institute, school outreach — showcasing the RecSys industry</div>
+        </div>
+      </div>
+      <div class="speaking-card">
+        <div class="card-icon">🐝</div>
+        <div>
+          <div class="card-title">Manchester Meetups</div>
+          <div class="card-sub">Building the local tech community</div>
+        </div>
+      </div>
+      <div class="speaking-card">
+        <div class="card-icon">📖</div>
+        <div>
+          <div class="card-title">Early Career Journeys</div>
+          <div class="card-sub">Demystifying data science for beginners</div>
+        </div>
+      </div>
+      <div class="speaking-card">
+        <div class="card-icon">💜</div>
+        <div>
+          <div class="card-title">She Can Code</div>
+          <div class="card-sub">Early Tech Champion award winner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="section-label">✦ my work</div>
+  <h2 class="section-title">The<br>Projects</h2>
+
+  <div class="projects-grid reveal">
+    <div class="project-card">
+      <span class="project-num">01 / DEPLOYED</span>
+      <h3 class="project-title">Collaborative Filtering Engine</h3>
+      <p class="project-desc">Built a recommendation system using TF-IDF and Word2Vec scoring to generate personalised suggestions. The model went live on site, serving real users in production.</p>
+      <div class="project-tags">
+        <span class="tag">TF-IDF</span>
+        <span class="tag">Word2Vec</span>
+        <span class="tag">Collab Filtering</span>
+        <span class="tag">Production</span>
+      </div>
+      <div class="project-scale">
+        <span>🚀</span> Live on site
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-num">02 / LARGE SCALE</span>
+      <h3 class="project-title">Large Scale RecSys Maintenance</h3>
+      <p class="project-desc">Maintaining and evolving a large-scale personalised recommendation system that generates tailored recommendations for millions of customers daily.</p>
+      <div class="project-tags">
+        <span class="tag">Personalisation</span>
+        <span class="tag">Scalability</span>
+        <span class="tag">MLOps</span>
+        <span class="tag">Real-time</span>
+      </div>
+      <div class="project-scale">
+        <span>👥</span> 14 Million customers
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-num">03 / DEEP LEARNING</span>
+      <h3 class="project-title">Neural Collaborative Filtering</h3>
+      <p class="project-desc">Developed a neural collaborative filtering model using a two-tower architecture — similar to state-of-the-art retrieval models used at scale in industry.</p>
+      <div class="project-tags">
+        <span class="tag">Two Tower</span>
+        <span class="tag">Neural CF</span>
+        <span class="tag">Deep Learning</span>
+        <span class="tag">Embeddings</span>
+      </div>
+      <div class="project-scale">
+        <span>🧠</span> Neural retrieval architecture
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Personal Projects -->
+<section id="personal">
+  <div class="section-label">✦ currently building</div>
+  <h2 class="section-title">Personal<br>Projects ✦</h2>
+
+  <div class="personal-layout reveal">
+    <div class="personal-text">
+      <p class="big-quote">"What if your next favourite book found <em>you</em> — based on who you actually are?"</p>
+      <p>Outside of my day job, I'm founding <strong>BookClub</strong> — a book recommendation app that goes beyond genre filters and bestseller lists. Instead of asking what you've read, it asks who you are.</p>
+      <p>BookClub builds rich reader <strong>personas</strong> to surface recommendations that feel deeply personal — whether you're a slow-burn literary fiction lover, a chaotic multibook-juggler, or a midnight thriller reader.</p>
+      <p>It's me applying everything I know about RecSys to a problem I genuinely love: getting the right book into the right hands.</p>
+      <div style="margin-top:1.5rem;font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:0.75rem">Tech Stack (so far)</div>
+      <div class="stack-chips">
+        <span class="stack-chip">Persona Modelling</span>
+        <span class="stack-chip">RecSys</span>
+        <span class="stack-chip">Python</span>
+        <span class="stack-chip">Embeddings</span>
+        <span class="stack-chip">NLP</span>
+        <span class="stack-chip">Mobile App</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="bookclub-card">
+        <div class="founding-badge">Currently Founding</div>
+
+        <div class="bookclub-header">
+          <div class="bookclub-logo"><img src="data:image/png;base64,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jDEtpU01VrUUbpxd1pwkaDwqHWliVYy4KgArFUMIQcSNmzapqkooUVW182BnR3vH8uUrnnvueZ/PN27s2NnHzD7pxBNmzz4qGAxquVRVtaOXyWQqpWc454goiqLGkgMHDi5fseK9997/+ONVO3bujET6CCGyJImiAACUUsb42nXrctqQR0kXhCG2MeggmnyuqFiDtRYwUZ/zVCRIk0AbN258+JFHD3QcPHDwYHd3dywaZRwlSZQkiXOeTCYBYMSIEXPmzD7zjC/On39SIBAAAFVVCSF2EqK0odG6VBAEAOjpCb351luvv/6PlatWH+joQERZlimliWRSURRCiNfrrautra+va2pquu3bt86adQTnnFKq6fccW77fRCku2GuV03nNKWJVFCyIZTCqAJBzbeSMeRF6urv37d+/Y8eO9es3rF69dtOmtq6uLiDgdrkopbFojDH1sMMOO/+C8y6+6MKxY8cAgKoyQsCSXroAYWHoKbV5y9bFi//8yit/27lrlyRJbpeLcR6PxQAgGAwePmXyjJkzp0+fNmHC+OaRI2tra2RZNheYUYs5402KlgTO01pbWsOHWGC8Mf0tafN4167dBw8e9Hi9Lln2+XyyS/Z6PC6Xy1Da3r37Vq5c9e57769YsWL7tu0c0ePxMJX1RfuCweA555x15RVfnTJlCtgrRyeDqDl6GqVWrlr1u2efe/2Nf4TDYZ/PJwhCpK9PoHTs2DFz5sw58YTjZh8ze1Rrq7mERCIZj8disbiqqrFYTBNjWT/R0C02bcpcdu7eGluS91enXmEFEgtMkt/gAyqq+uMf/+eSJS8nFUWWZUEQJElyu91+vz8YbGhtaRkzZvSE8eMnTBg/btxYt9utZUwkEsve+b+//Pmvy955p6urKxAIyJIU7u0N+P1nnPnF66//xuRJk0AnJJyDMaY5Bx9/vPK3jz/51lv/SiQSNTU1yWQyEokEg8H580/80gXnH3/8cRneJ5PJTz/du2v3rm3bduzctat9X3tnV1ekt6+vLxJPJDhjqsokUbjssku++93bMjox2y32w1vRxCpK/psbNCDmmmVp2hA+/sRTCxfe09w8klCqKJwjEsCUB6aqKmPIORWoz+dvaWmeOHHikUfOOvqoI2fMnOH1eABg3759Ly3+80t/Wrxt+45AICDLcnd3VyAQuObqq2644Xq/36eqqqWetWhkWlDt3bvv4Uce/etfX1aUZE1NTTwe6w33Tpg08bJLLrn00ouampoAIBqNbtjwyarVq9esWbtt24729vbecDipKARAEARBEAmlhFJKCaFUpJQxtaPjwGOPPnLRRV/SmlRMbKt0YoEDbhUs3Egs+xBGcS0okyvAORcE4brrb3zzzX8FAv54QhkR9AKlsbgST7BkkqkqAgClRBQIpYhMTSoKY8zlco8a1Tpr1qz5J5146qkn19XVAcDvfvfcoqef3bp1i9/vp1To7u6ePm3awoV3nnTSCVq35A9J8LSd98If//TAgw93dHQ01NcnEolwODxx4sTrr/v6V77yZQBob29f9s67b7+9bO26dfv2tSfjcVEQJFmmksQJYQAMkSNSAIkQkRAXpQgQ59wjCl3dPeeff96DD9yf4brtuoMJ/SGWuYT8sHDVCxLLMpsxsckMKdeiOyKl9NqvX//OO+9wkC48Y8o93zuFRZWEwsORZGd3vP1A3869PTv2hHbs6dnbHu4JxxWFi6IgywIlPJlIMM4bGxtnzJhxztlnnXvu2bIs/+9fl/zigYe2btk6csSIaDSqMnXBgptu+/a3CMmnFjXZ2dnVdd99P1myZGkg4KeUdnYenDx58oIFN55/3rk9ofDf/vba3//+xieffNLT3U0JkVwyUFEBUJELQAKi0CTLLS6p1e1p8citbndQlnxUcIuSRyA/2bTl/VBvMtJ79tlnPfLwg0YrvlA/lxbjLVhOHhiqyAZIreO2TlajMP3f4n2HooEAAJQQQoiisKkTm2qCNYxEBVlobiZACQgUCABDFlM6OqPbdnevaWtfvWH/J5u72g9EGMgut9DXF122bNk///nm//vZ/aedesrlX/ny4pf++NSTTz/+xBMCFQLewEMPPbxhw4b/+ulPgsGgpVpUVVWSpLVr1932ne9t2769qbGxp6fH4/Hc/cOF559/3sZNmxbc/K333ns/Eom4ZNnlcrv9gTjnKoEGSZzs9RwR8E3x+8f7vCNcsk+gEhU05cIQEFFBqHe5jq5veLsnRNI+ZqXA3pExUMYq8m4KDppLK20Rvv/Q3n7l8/sAgRDSF1NQQZUhJlVEAEyttRFCKCUtI3wto2tPOHECqLyrM7qubf+y5bs/+HjPlh2dDGV/wBeLRZ9/4Y8v/PHFefPmXn31lb+4/78feOiRXbt2NTU1/fOfb11x5TWP/vKhCRMmGLjFGJMk6c033/q3790RjUYbGupDodCcOcfccN039h84cO03bli3bp0sCD6fz1dbG2OMAo5zy8c21B7bUDfJ5xshSy4gHCGJXEEeYzzKUkqDAAABhiTK1BhnhFBA0MIQGd/QYVS8LHMbdf81WHO6Zml/Rf1J7pGxTGe7BcobaNX6V5ZdHDkBSgAIJYRAym1C0G+dURWGSYYIhJCGgDz/uPHzT5ioRBJr2va/9va2f7yzbfuubkny+nzS6lWrbnzvvWNmz55/0okrPvpo27btDQ3127dvv+LKax579JGjjjoywy1NA/7xxT/dffePREn0eD3JZHLevDmTp0z58X/+dNOmtoDPV19f36eyXpVN8rtODY48sbF+asBXI4oMMc55XGUxLfgJQAhQQlLDku5MDgDI44oCiAgoy1JODxg6ZHAi23m4jIYEKd6ZJJaNxW/tbgzEolIJoDTVHJVlpg8BwNxgF2h8S6VUkScTgCCK9JgjRx8zZ+wtV819891ti1/7ZMXqfSoTgsHgxk0bN27aNKq11eWSFUXx+/2hUOi667/5P79+7JhjZmvL2KIoPveHFxYuvDsQCFCBqori9fn27Nn77rvvu2U52NgYTiqEqfMbas8b2XR8sD4oyUnEOGM9SQUACCVUI5StA5e6H5Vx7TqllaQKnQKzH2nKoUtlQ5IkTXTFEqr9DpWcq4SAIKSMXyWaRMSAR7rgvJkXnDlt5fr9LyxZ//rbW5Iq9Xvljo79hAqEEMaYx+OJxeM33njzs88umjr1cABY+sqr99777zU1NYQA55xSIRaLxfr6fAF/WFGDnF0+auQFLU0z/X6RkD6VdyoKAaCECJrpjYi6BhO0COwQApQApqeEwcbSR90PxaRON6IQjHvenYQbLFg4ELtunEt1QRABkBCiKiogt8lqCrCmL1BKAAhjyENxQsjRM5uPPmr09VuO/t3itf/72ifhGKsJSIQQzjljzONyRSK9N3zzpj8vfnHnzp23336Hx+MmBDiipoc5kAhiExUuH9N04YjG8X5vEqFPZQAgECIYAxaZziPalqtsK3WRTURIqAwBEEGSLFThoFKq6MoImI13p3FVQ40DsTnCeXbNniUEFJUB2sVITHo6t9GEgkApIChRBTExcWzdvd8/9WtfOuLXv1++9B+bEUjAKzPOVZV5vN59+/Zed/03Q6EwR04FgTNOACiBsKJ6ROGqca1XtraMkaWoynoURgkRKAEgGbJogiljTWkTQduUYXmDyDHBGCAg516v13HHDDDy7AawR+rnfu3HGlid6TyE5vN5AIFQiMdVAABqwyHLAkh6nNOzgQoEgCoJFWPJSYfV3f+jMy46a8ZDT3ywYs2nAZ8siFRRmN8f2LhxE6WC2+XhjAsE4pzHVTx5RMPNE8YeVVMTVdROlQmAIqXpktOLMCnpRHQsSjGOAMkY7dklQQ6cQhK1E/T7/cbmm/qtHMZL6UKRAFTORj+729DbIDrZRDgCBRJPMoPJnos8+hEMI0IpASIocQVjcPy8MXNntT770qpHn1kejiQDPokx7nK5tV17lJCepDLK4/7W1LHnto5ADl2JJAUQqe5ZCEJSLc+JEqRYQTKVEyCY5V9asgEHTDCWIl/uTaD+T6VZwzrFVZHvbsAcEhl/AhAEQZvoSYWVMrOyPpkxM6VUEKgSiVOufv2qOX945OJ5RzSHehOayaVprojKzm1ten7OERc3j+xLsqiqigCamNIiH1ZPCyFJBQR1P+gnStaQT7Evwbk2TJTkjpGpZ8rELqfFpmWvwRyqFGIRyzsx04sAANQEAoBACCSSDDiU1LfEos70mbZ4kuiOTpnQ8Oyjl3zlvJnRmCIIhBISZfzGSeMenjW9RpS6FEUAoPZOaZpJhvgNwayplUmAmSypKDykHjfy+Xz6/ugPj0rRblb9ZJEm5y+AHbH0A5pHfAw4rNtv+tiEx+MBAEpILKYA48XvXrf0dNN/U4dEFIV4NEkl6ZzPH649V4aAIqWnNTbEVZ5AFEiaH5grikBPFdvbSqfJSC2SCr0DcORJjtrqgp5Y/UEOhUtAIYYZ/DkKueeGpqD96aBCG7t0CyRJ0qZzPKlwxi14lRows5mbByTnkAAAUEqRY180mTaLAABjqgrE9NIL1NErQ5dMkcQQbLN7uIsgACWgcowzRgEJpeati4VFiAlFdYSjNJj7T9c0DbabcfMXWD6kJ22en8Hn9wmUEgJJhTEOJG0pOyi7mDFJ+XZofCjReApg7GGjbZVKR3KPLNtCCRDCCCQ5B0RCwJXeqGi8R8chnqy972zwCqdyUIiRWA5JU1Z6WXArTQlt4gf8fkEQCIFEQk0qjBJi0ZpSmmg1TEav06DAzFId9aeW9wF2TUuLSQ6gAicAAhV8Xg+AbmeYKWfRd4mZ/1j8Urg0Z/XlSPRim2g0PgcO2Qmd4lP6HwEA8Hg9gkAJkESSJZIKWOxT0rex6JoNF5hBcXHtOeZcejmsOmvSW0tZ7R4VRBWBAIiS5HZ7jEVaysaC0PVnJq+NQhsAOPMKDQyykfsDzi071eV2u0VRIgTiCTWRZKY13dyW9xOY8R00tpOsTZX6n10lls9AAoBOJeakSDGVAElyrgACEEkS3W6TjWVuY95fizfJrCookn1ZYhWu3lLdFEpSDng8HkmSAFFReVxRoYCNVarQ0rlr2Z8IZENOBb+NmI90Vk46AgBQwARjCkcCKEmS5gLneL5WQ1XwJos0MIsp2go5X6YwllCQpGWKzeWpkBAA8Hq8kiQhoKryWFzRLelYzSxrD9EhENJPC2ZOCaR9wMy/fFI7dz0wc5wd55wsyJEgRhVVQeScS5KU4xU6oIYThhWBUkWFjSosOBADIF5Lh8slu1wuAFQZRqOKbfhLf5gyqw13ZZnT4s5RF03Iru4ZcxkyYqqKVDCL6FcP84ACiXFUEIFzQRQzuxsK9nd/7CT9eBLDD/nz2DCh0NZkuxLtgQNNOXOBsiy73C4A4Ih9ccVeFZqy5lzIRC9t5E2ursKUnErzCiG7gQJ1xZj8QIOTS6zTZa9QSqKMMUTg3CXLUu4O0gGB3QDpuWXLgkKjryFHYpGcPzaFDqKg0vsMqfoJAQCXy+XzehE5IkRjCqTCDc6mqzlKnjk1aFHU5dDHZzHDrmwJiNpCjVXvpIx+B/2bdoF7FZUjIEePx+OSZe09Do7urhwoqWajKizMLUsMjtEOAKDt26R+v59z5By7QlGgls21mwQGR8y+6TpRkyUbAnJOjBlTwUrD+2HQfJLZL5PNalQnFCCkKByQc+Z2u/Ns27JtdflAjGd6sa9vpYWN5ZBbRk2MVtf7gawhkysctF6uqalB5AjQE44XV25+eWx5OYe4aXmV7cWsNDIGD7KeAwKg/UJO+l+62JDKAIBzrr0SpyhilQV5B9VsnJECcSyTuZD5S3IPCtZdOkz+appYAW1rVKg3bmXdmFrj0Ns2pyHGcaWZhDqlSRAN6Yj2A+qIiHpFbCsqOWCnolIgnGN9fT0UQ6yyDIIzp8BACWti5dgDuUNia3MOLmprazXLo7s7Bsa3T+SYyjkbpEpqbDYsgKbYFer+D7kTICdV1i4z5jZVxhC7kgqlBBFra2uKaufAI7+lYI98EotY/cuTsmBleZAvEpA2afWor69HBIHSg919oDIChgmTKSKvGHOG3Kfssx+qwyzRMtraahxS/qT2vyy9jP2JAACEEBWhlzEBCEJKYhWE5dAMvPoklofWGMityf1hVWpoHBdRV1sLCAKF3kgSFaudM7qyTccOq9G8zbTtnKKu+UXfaNtug3BDQEKIxkVCdAmyES8KkOS8R1EESgihDQ0mYjkI55j93tKFGcm2rihUyg7SYlFfX08pFSgN9ybiCVWgVqEs2zlrjmTam9VGM52gMYP2aGw6saU9RNK+n37MrRJSQqIMwyoTCAgizbwxFWwEollWWd5Jv6SXqQ4nHKsYYjk24zSBEQw2iJJEBRKOxHv7EkQg1j4XGv7ZLcVYNggAiPYeiGxQwLxDJ9O4bJwLAFPWHUBmk1/aDTGbY5BVsAIlfSqLcU4AREHUXipuF8QqoP5MM6D/cOL/aDiUxNLfuMGMKzgLa2trXS4XAYjGlFBvHASaa7pY3r6lWrTr+IxZTjKaMM0TG2SrTZtcmLb6dUnMbdC/CkAkJKKyBGPA0eV21zc0WNRiUVT+9pQCux607EQzDsHjXzkOt24uG2CKM6SvEwIANTU1brc7FosmFR4KJxihqgpCZmNWeiGF2BHBUY+npZwukJZHJ5Bsa4nREMLsjRJIfWognRgxrXE5ACGkM6EkOHcDD9TUBhsaMresr7AIwgwotwpOxwxy3o+lH8syBRGMeqDQx8D1GfUJa2tr6mpr+/oiqsIPdMeFeo9HICCkHxblHBgHxkHlKuecc81epiRtDzltLgJiJj5qjjZYN04DyfBJp4cBQXMAUHsAH0QqCkR7ZQ4wBLcktyeSCqLEWF1dbSDgN5VbNAZwKM2z3c6XyHmNkZMMA45iK8osF3q9XuTo9cgPPvnuB2t2i5S4XVJNwB3wuhrqPE0N3mCdq77GVVPjAZcAhADnoDCuMFV75oamv7CTvwUEEHlmrZAYnveyibKQdFs5RwSkBCRCZEq118KpCEnEPoWFmdqrsl7GwozHGUtyDpQu3t/hE0VVUfyBgCzL2octiukhq5aUE5b9JxaUaRWB3LYzxgRBmDBxwserVrU0N7d3RH+/eB3Xhb4JAVEgHrdQ43e1jPSPG1U3ZXxwyvj68WPqWkcG5IAHECChqgnGORKiPQatrwz0StoU3ETtF9029NRMJmnhxAEpgkSJWxJEQuKMdynJPbH4jmhsRyy+J5E4mFQ6FaVXZTHGFUSmaVxCEMAriH6369POzgkTxkP6TadmP9ZOw2Pu6eDA3B6xwO8DDZIZlmKh+1abti576y0L1qxZ27Z5sygI6XEhlBBCqUApIEkm+IE4a+/oW75qH+NcFGggII9uqTlqavMxs1qPmjpy/Oh68AqgMBZXGEOBUsuYqvYe4yyRUio1a8prFjpC6hU0LoG4BZEjHognPuzrWxWKrO6N7IjGuhQ1gUgooUAEAoQj4Rw544wDY6kdOQgxSnuSyWnTpt58043aO1ctu7FADw8iqyyRJpbBKnOgIkqGYVZBwY7QtQ1T9jhBxMMOG/fHF36/5OVXurq6KKVKUgmHe3sjvX2Rvu7u7u6enp6enkgkoiTjnDNBEEQiJaJK25au9RsP/v4va2sDrqmTGk+cM+bEueOOnNos1EgQU5SEQgjJPtSe9oI0+ZSNg5J07AEAADgCR5QICYgCA9gdT3zQE363J7Qu3NuRUBQAEUBEBFUVVJWpKgPglHg8Hr/fX1tb6w/4a2pqJUny+X0et1tV1ZaWliuv+GpjY1DTgw61SkUpHxHAqkX95pShSGJ1WkpHZBxJQjjn9fX1V135NcuE8Xi8p6eno+PA7t17tm7b1rapbdu27Xs+/TTe20sIuF0uxvjKdfs/WLn3sWc/mnH4iHM+P+WskyeMHFMPSVWJKpB6jRYC0V6Wlvbd058a1GjFEZGARxBkQvbHE28cDL3e2f1xKNylMIEKLgISYzwRV1Qmej2NTU1jxoyeMmXyhPHjW0e1tLa2Bhsa6upqZVm2tKJyWJUbRK8EmZQfelU4MK1F85HNV7ENoguthFkeaNwyfQCBaF/Fcbvdzc3Nzc3Ns2Ydof2gKOruPbvXrVu/fPnHK1as2L59ezIed7ldsiSs29jx4co9v37mwzNPO/yyc2dOn9oEyJQ+hXHNcEoHx1IRdoJAGAIh4BMEQuCTvuiS9gOvH+jcHU9QKngIcSlKPN4Lsjxm9Kgjj5o1d86cmTNnjBs3znJRGRGZ9saRTOws/bVVy2BqgW6pDNFFmOaKAxiJZR9hygMLVuUtKnceWvyUlW15g14WJWvvy0sLGO2LgZlfk0nlk082vvvee2+//c6aNWui0ajP5yVU7I0k/D75tBPGf+3CIz43e6z2HMUbb25ZcM8rNX6Zc0wi/mbW9Nk1AQBUOS7vCS/ef+Dtrp5eRfUJAihKX7RPkuTJUyadcMIJJ88/6cgjZ+lDBvqZoPu4l9U9Za5ZhPKMv5O8PTmwsGOtUSllv7BqlbBEYll5Jodcbuu/mav/zOnq1WuXLn3ltdde37lzp9frdrk9vX1JQYAT5o699pIjTzpt4r9e2/z1H7xcG3BxzuOIL805aorX/df9HS/t6/g41MuBegUa7+uLxuOtra2nnDz/vPPOmTt3TuZrXtqnNy2/VF2CQAKwJhaUn1v5m1leYtmXVFnIkIxSqrldPaHQ0qWv/uEPz69bt8Htkr1ebzgSR8ALz5iqKPja21u9bokjT3B+ZlNTeyLxXnePW5Q8FPp6Iwxx5hEzL7rwS2efdWZTU6NWhaqqAIRS68+ep5qR88cxrJ6E1cutSiKWuYABIlYFssqAzKdQASCRTP7t1dd+/9zzK5avEEXB7/f39iUpBa9HTj1WjxBRVUoFLyG9kV7Z5Trh+OMuv/yyU089RVO12pc1zcIpA+PwlGAQlTo0eVDQWyvYTAfEsk/tEIOm7wvCojt0jdM3T3sNpEYvRHzt768/9dTTy5ev8LjdPr9PVZkWZNJiEd2hHlGUvviF06+++qo5c2ZrWbTP3TjlU76rVrAKfQ5I9zocrIEk1iDTwtBvAyL5rJ2JTJmmQhFBC3pp/Fj6yqu//vVv1qxZJ8uyxjklmQQC8+efdNNN35w75xhI2+N2X7wpMB4OiWUOzwyo0HISXCpKDwJUwDehbVVDboP6pZQte0UnscymiSZ+KKWJROLFFxe//sY/Ojs7laTSOqr1a1/98umnf15LA8aNy3mbob9UXGTFVBCxPCwRZvMfTBZbicQ6hMg3/Jl7Kt61RNsT+9gGGPVj5tOpAKCqKudc8/U0syxDqYL+ShF2VVoUFc5i0xf9Fe32ZRZqde6VQ04syBukyF63+7JJ/jItTnLLN3HOyAntFdxp55Fxhhz1iq8oL7hAqywbUEI1/QlA5i3NYRALKoRYYJBbuXKecU4J5Zznd91tC7S8VGi6a2TSFlV032NGo0gxyZZMA/XbXfTNzi+hiSnjIBCrKMPcYUMqhVhg757kjIqzRzdtE5lYawdtREm60vRaS17kGtSWzXYiR2luRtuq7YWu4ff8KNl/MDdEj4p5mALS63G6K1rA+oknFp19zgV33vnDUCgEjrllLjl1ZLhighY4ffiRR885+/w771wYiURSleYfKB2rNJHz4QfLv3z516644uq1a9dpy5oF2qd9ToyQDz5cfumlX7n88is2bPjENiOxOXYM1P3X4je08aPtizKgUj55YglNGT3//AtbtmxZuXLlF8/4wqmnnKzt8suTq6DGy2cDIVJKo9HoCy+82LF//+o1q88+5+yTTjwBGSN2lZo8f436b7399tv/WoaA4yeMP+KImRbzgaQkqF5AAcDrr7+x7J3/IwSWvHzU9OnTLDhtYdEUF3TPxypDOmI8zO/OZpJVNLEAgCO6PW6fzyfJUh7zXd+rdomKmth+n6/X66UCzREYxbgUbo/b5/eR3Fc/GBWKVXavxxvw+wFQ+8Aicdj0fkdnnIc/nAQgKpdYqZdCITKVaUFIKqS+Jam3qTWYXbnMpoZ8S3WIqVpMiXgaWZspnSU11CTnork65JwzBqb4PoCxNsNFBOTIEVHbcIiIyDmk9q3ad5fuuKys0teSyYSmWV25xNIbRIhACEWOiJh5daIhmKQhE9jMXFFV1bzSYpnMrGFRe7lb+hjS4dCMENLkmeFT5BmipLpbV7WWXe/3ZW7B0pbSPmyeSZnHDCgxwmdxbo1iyVrJxELQnmfnSAggco/HTQj5dO++SG+vz+cbPXoUpCmSypBeS+7o6AiHeyVJamlpzoQ09WOZSnbgQKQ3IstSS0uLKIoZwQOmoEBmGbF9f0dTY1AQBI3W2jD3hEJdnV2I2NTUWFNTo100fP1cq33vvn11tXVerydTEaW0tzcS6Yu0NDejjsSIXBQEQRA6Ozs7O7tcLteYMWNEUeznQztgMJIcC6qCCQ2LN5VMLABICQeOKLtcby9758lFz6xcuSqZSFKBzJg+/Qc/uH36tGmMMUIpIgqU/v31N37/++e3bt2aSCQopQ0N9eecfdYNN1yXeY5KkxBLXl763HMv7Nq1Kx6PC4IwYkTTxRddeM01V2U4anD5ZVnu6u6+a+E9H3zw4Yzp0x979GG/3ycIwspVqx9//Kn169dHIhFECAT8J88/6dZbFzQ2NqZZmuXKt7793bfeemtkc/P//OrRCRPGa2H9ts2bb7hhQVdX11e/evnt3/supHQ9iqK4r73957946KWXFkejUUrpqNbW667/+gXnn6efS+VF8QQeeOO9DKuNmhohlFJEdMmux594KhQKS6IoCLSmJvDuu+9deeW1Ty96YubMGYqqSqJ4/88f/OUvH3O73aqqcMaBkN7e3v/6f/d/8OHyR3/5sN/v07h1z733LVr0jNvtSiaTWsizp6fnroX3rPjo4wd+8d+SJGlP+hAASqnKGCHkwMGDN954y8pVq0VR2LRpUyKRqKkJ/OV/l3z/jrsYUwkhqqIAQE9P96OP/iqZTP70p//BOQfIvohGVVlbW5uqqm2b2jZv2TJx4gRN93V1du3avVsWxSVLXr55wU2BgB8ROWcBf+3LL79y8GAnAEiS6PV42jZvufnmW3fv2n3LLQsGg1vFKtfct1oMDLGKt/ysS8i5l2zoCQGAcyZQetmlF8+effS+vXv/9KfFNTU14XD47nt+9IfnnnW73Utf+dsjjzwWDNYnkslzzzlr3ufmbt267YUXXhwxoumNN/5x/89/cd+/3wsATz719OOPPzly5IhkMnHpJRcfddSRm9o2/+lPL3m9npdeemnq4VNuvfVmlXEgQCjlHAN+f3d399XXfGPbtu0+r8fr9f7qsV82NTWuXbf+zrt+KEuSSuHwKVPOO/cct9u9cuWqN9/615Qpk3PuIfWgGMiyTCl1uWQ9JwRRkESJUuLxeHKMM0rj8fixx84784wvMs5ffnnpjh07GxsbH3zokZNPPvmII2aUl1vOA1b6X3W5DpkqtJRwOfRKPRuT2ufZ19d3xx3fv/66r2s/Tps27Xu3/6C2tmb9+vXr12845pjZTy162ufzhkLha6+56oc/vFNLNmXK5DvuuGvEiBFLliy95eYFtbU1ixY9Eww2hEKhb3/rlm9/+1Yt2aRJExYuvGdE04g/PP/Hq6660uv1AAIiut2ubdu3P/Dgw5s3b5Elye/3//Y3v5o5cwYAPPnkomQiIcvyzBkznnn6Se2T4Fdc8dWDBzvr6+sAgBq8OETGGOeY+VKrBs4554wQASDzmTEiUKGvL3Laaac+8vCDLpcMAF+5/MsXX3JZZ2cnY+rSpa8cccSMEgLFGWTNLCeRA+eF6jAwlM8TyM6DTHQXDefZUgE0sxcBgMw6YibnPB6PM5Wdd965Uw+fkkgkmaru+fTTSKRvx/YdkiTKsnTppRdzzhOJBGPsgvPPO+yww1RV7enp2bx5y46du9rb91NKgsHg1772FX2y0aNHI0BHR8eqVaskSdIMeY/H88ADD61bv97r9bSOannmmSdnzpzBGIvGomtWr/F6vNFo9Jqrr/J6vfFEQlVVxlhjYzDtSGpzh+ges00d6CWN7tVamcgEAoF4PDFz5gyXS47H44lEoqGh/vTTP9/XF5Vdrp27doEpZlEsjMqBWB1nYBOINxSnz3polnTQfKwLiVjdAlIKiWSCUiqKIqGEUjKyeSRjDAiJRqPd3d2xWJxzXhPw19XVUko1U0kUxebmZsYYAobCoVBPD2OqqqpNjcFAIKAlo5R6PJ6RI0eoKkPk3d09AMA4I4QwxpNJxev1Rnp7F9x44+RJkzRjv7u7JxQOAwG32z1mzGhElERREARKKWOpp56yQfWsM5q5Q+PCdZqDKbMStA8TJxKaAysIAiKOam3VgluxeAwMa5H9GYxsM0rSgNlpkYNDQKwC+w7MV1OvzyegPTyq+eKIXd09giAAELfLLcsSpYQAKIqqpgOqWsp4Iq6FrPw+n8fj0WJa8URCS6alYYzF43FKiSAINbU1AEAw5T9KkhSPxf3+wK9+9ev29v1utzvl7GkbJDlnLFsdY4wj5+knz4Bk6ZK+lRS9MuldLleWTzkglKTuVzPzQ+Ew5xw593o8YFrYRt2/EkfBMlGedHn11KASy9Ftk6wKBM0rTL8Sw+PxaI8HCoLwyYZP2traZFkWJXH8+MMaGoJ1dbVAoCcU2rDhE41JgiC0t+/ftm27LMt+n3/cuHGjRo/SPqL56ad7N7Vt0khGKd29e/eunbslSfL5fJMnTWJMi/KTWCx284IbR41q5Zzv+XTvd77zb7FYnBDSGAw2NjVyzpLJ5AcffCgIgib5RFGURNElS9n7SMfiBVEURYEQwjkLhcKUUlmWBUHYunWbqqj6t5KkwveEuN1uSqkoidqj0u+/94Hb7U4kEhMmTIA0sWx2SJQTxJHpU3ZiOZpJxKK5GaeQAhEopZSu/Hjl3n37Oru6lq/46K6F9xCA3khkxozp06dPkyRx/snzw+HeQCBw/89/8eGHy0Ph8JatW+/50X2JeDwWi82cOX3MmNEN9fXHHX9cOByWZOnHP/7JmjVre3t729o23/ujH3PkfX2RY4/93Jgxo2PxmCZBYrHo9OnTfn7/zxjnPp9v+YqPvnf7Haqqulyu00//fCgUrm9oePyJpxb/+S8dHQc6Og68+da/7rrr7rVr10HGESEgUAoAkig2j2xWVdXv8z+16OnlK1bs3rPnxZcW/+y/f+7xerQ3mmTunVLidrk2tbVt3rxlf3vHtm3b//2+/1i5apXL5RIl8ayzzoS081jyoDiC5Wq3s4QD7BUWVnOFmG5YWSOEMuS9kb7GxuAjv3zsyUXPut2u7u5uxpiqKJIk3r3wLlmWEfGWBTe9s+z/9ny6Z98+vP6GBcFgQygUjsaigEAIue22b2vxsNtv/7ePPvr4wIEDbW1brrz62qbGpp5QKB6LKapSW1v73e/cBgDIkXMuCKIkSd09PfPmzb33nh9+//t3jhw54rW///0HP1h43333fv3aq1999bUtW7bU1dXedefdwcYgAAmHw3v27AmFw4/+8iFt+SX9phoAgDPPOuPlV16pra3dvXvPDdff5PZ629v3A2BdbS2llHNUGQMAt8sVCoUPO2zcP998a9myd70+bzQa7YtEJEk6cODAXXfeMWP6NC3WYMmPggHFgnuqrDyofLBMUk6JZSmmbHb5WMpXzjklcNtt35o4cUI0Gu2LRtv37d22bVukN6Iq6qTJk558/LdHH30UY4wjtrQ0L1r0xEknnqioqiaHDh48oCSV0aNHPf7b/5k3d45mDB02buyzzz41b968ZFIJ9YQ2btzYebBTVdUpk6c8+cRvJ0+exDl3u12SKHbs39/d3SOJIkf88mWX3HbbrZ/u3UuA/PaJJ1999bVgMPjUk7/54he+kEyqiWRy565du3btikajY8eOOe3UUwCgIdjQ3d1z8ODBru5uAFBV9YLzz/3GN67t6uqKRqN9fX3797WPP2zcT/7jvvr6+q7OrlAopCSTAHDxJRddeOGXIpG+aDTW1dW1c/uOzoMHOefBhuDP7/9ZJjpqWnvK9mSxMBp3xZdgUebA7iBF2xN9nXnOTAUiUkrj8cT69Ru2bNkSCoU55263e8qUSfPmzRVFUVvPAQDkqX0mKz76eP36Db3hsMvlHj/+sOOPP87r9WTCiZlHtd599/2NGzfGYvFATWDC+PGfmzdXkiXGmGZ1rVu34e1ly4INDWefdaY/4OeIAqX/+OebW7duq6utO+20U4LBBk15rV23fvXqNaFQSKBCY2Nw7tw548aNRcS+aHTJkqXhcPikk06cNvVwba8zIeS9997/6OOViqKMah112mmnNDYGV65c9dHHK6dNPfy4447NbGJYv35DW9vmzs7ORCIhSfKYMaOPP/7Y2tpai1fQZBfrix+jkhxBMyx05qEllpO+yPPUXoZVqaViREosnscyBKkzY5wnmXljsWEnRWbF2lydeVePfnXZkF5lqiikDJKMO0lsnirLbMHIsdutvP2CwHSY1C5MXRTKTiwNllLa3JAiFqPSyBaQRraudJmG0Lbd08m5yYwvWdACCNobkTLXtQcJDWUaqtMEHqTWklMbewy0zqTXatWuZDISq2L1lRr3JhT5/FJBDCliEeMMs2xN6XUZyz40KHYl3ix4wFkJ5bvrAWEVlGmtkBjaRyzqP7QMyKCfI2QWHqUHwXNLcN6Swe9Jw/haTqdyLkIPyh0bSZyLYgfJTuTko4vF+pQ9DKVbes0k+4tdy0nxt+YQ+fvTOcpFrPLdeX6UFtrRUIp/VOwgFNkpeQRq+TrWCbe02tFeelXQA6v9RFF9Yc5S2DkamJVex7AnzuDM1UKuVwFU/NZkxzDOMxvZUPSkL41PluQtCvZitlgXYWDhsOoKehK6LEDLw8KZCkdMBgHO9yqUAXYEctii4SOxwM44KHKCFzeUeUoeKE4cWgFVKoYVsawxoGEzc7FFJOinVnVc80DBLjTvBMONWFmhVdawWWnFlWB4Fbn8NeAoudLhRiywUogl9k6htc6ieJLTKrucVg0dgmoQYFgSC/o3GLZRnFKFBzEdWDAsX21DEsOTWAMDqyCv5XjniSjapYdCUbShjuEebigJRH/kTFAR0ykpRBezJBtOqBLLGhb7QBxnKWr9eFiyCqqqMA9KGPLhypISUJVYVZQFVWJVURZUiVVFWVAlVhVlQZVYVZQFVWJVURZUiVVFWVAlVhVlQZVYVZQFVWJVURZUiVVFWVAlVhVlQZVYVZQFVWJVURZUiVVFWVAlVhVlQXWjX8Whot74VTKqEqtSgYa/QwxVYlUWct4ZMZS5VSVWZWMocgoAqsSqKBR8NeEQQpVYQwNDzoSveoWVgmI/NFLhqEqsKsqCKrEGAANiAA19IZWDKrEGBmU1roci56o21gCgrG/GHqKoEquCMHRpZEZVFVZRFlSJVUVZUCVWFWVBlVhVlAVVYlVRFlSJVUVZUCVWFWVBlVhVlAVVYlVRFlSJVUVZUCVWFWVBxRFryO3BrcISFbQIjbkHw2lF9jOIipNYGVRF15BG5RILqtwayqggYuXoviqnhjgqiFhGVLk1lFHBxKpiKKOCvMIcVH3CIY7KIlaVTsMGVVVYRVnw/wG4UXV/bXVNXQAAAABJRU5ErkJggg==" style="width:48px;height:48px;object-fit:contain;border-radius:8px;" alt="bookclub logo"></div>
+          <div>
+            <div class="bookclub-name">bookclub</div>
+            <div class="bookclub-tagline">persona-based book recommendations</div>
+          </div>
+        </div>
+
+        <p class="bookclub-desc">A book rec app that gets to know <em>you</em> first. Your reading persona shapes every recommendation — from mood and pace to themes and writing style.</p>
+
+        <div style="font-size:0.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-bottom:0.75rem">Reader Persona Examples</div>
+        <div class="persona-pills">
+          <span class="persona-pill">🌙 The Night Owl</span>
+          <span class="persona-pill">🌱 The Slow Reader</span>
+          <span class="persona-pill">🔥 The Binge Reader</span>
+          <span class="persona-pill">🧠 The Deep Thinker</span>
+          <span class="persona-pill">🎲 The Genre Hopper</span>
+          <span class="persona-pill">✨ The Vibe Chaser</span>
+        </div>
+
+        <div class="bookclub-features">
+          <div class="feature-item">Persona-based matching</div>
+          <div class="feature-item">Mood-aware recs</div>
+          <div class="feature-item">No more bad recs</div>
+          <div class="feature-item">Built by a RecSpert</div>
+        </div>
+
+        <div class="wip-bar">
+          <div class="wip-bar-label">
+            <span>Build progress</span>
+            <span>Early stage ✦</span>
+          </div>
+          <div class="wip-bar-track">
+            <div class="wip-bar-fill" id="wipFill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog -->
+<section id="blog">
+  <div class="section-label">✦ writing</div>
+  <h2 class="section-title">The Blog</h2>
+
+  <div class="blog-content reveal">
+    <div class="blog-text">
+      <p>I write about all things recommender systems on Medium — from beginner-friendly explainers to deep dives into collaborative filtering, embeddings, and production ML.</p>
+      <p>If you're on a journey to understand RecSys, come join the community of <strong>RecSperts-in-training</strong>.</p>
+      <a href="https://medium.com/@becomingarecspert" target="_blank" class="medium-btn">
+        <span>✦</span> @becomingarecspert on Medium
+      </a>
+    </div>
+
+    <div class="blog-visual">
+      <div class="blog-post-preview">
+        <div class="post-cat">Recommender Systems</div>
+        <div class="post-title">What even is Collaborative Filtering? A beginner's guide</div>
+      </div>
+      <div class="blog-post-preview">
+        <div class="post-cat">ML Engineering</div>
+        <div class="post-title">TF-IDF vs Word2Vec: Which wins for recommendations?</div>
+      </div>
+      <div class="blog-post-preview">
+        <div class="post-cat">Career</div>
+        <div class="post-title">My journey: from student to RecSys engineer</div>
+      </div>
+      <div class="blog-post-preview" style="text-align:center;border-style:dashed;opacity:0.5">
+        <div class="post-title">+ more on Medium →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fun -->
+<section id="fun">
+  <div class="section-label">✦ beyond the code</div>
+  <h2 class="section-title">Fun<br>Stuff ✦</h2>
+
+  <div class="fun-grid reveal">
+    <div class="fun-card">
+      <div class="fun-icon">⛸️</div>
+      <div class="fun-title">Figure Skater</div>
+      <p class="fun-desc">Beginner on the ice, but showing up and sliding around counts! There's something about the discipline of learning a new physical skill that feeds right back into learning ML.</p>
+      <div class="skate-path"></div>
+    </div>
+    <div class="fun-card">
+      <div class="fun-icon">🏹</div>
+      <div class="fun-title">Archer</div>
+      <p class="fun-desc">Precision, patience, and focus — turns out archery and building recommendation systems have more in common than you'd think. Both require serious calibration.</p>
+      <div class="skate-path"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" style="background:var(--dark-cream);border-top:2px solid var(--black);">
+  <div class="section-label">✦ get in touch</div>
+  <h2 class="section-title">Let's<br>Connect ✦</h2>
+
+  <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+    <div>
+      <p style="font-size:1.1rem;line-height:1.8;font-weight:600;margin-bottom:1.5rem;opacity:0.8;">Whether you want to talk RecSys, have me speak at your event, collaborate on something exciting, or just say hi — my DMs are open.</p>
+      <p style="font-size:1rem;line-height:1.8;font-weight:600;margin-bottom:2rem;opacity:0.7;">Find me on LinkedIn, follow my writing on Medium, or reach out directly. I love hearing from students, fellow engineers, and anyone curious about recommendation systems.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="https://www.linkedin.com/in/ashwaqsalim" target="_blank" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:0.5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://medium.com/@becomingarecspert" target="_blank" class="btn btn-secondary" style="display:inline-flex;align-items:center;gap:0.5rem;">
+          ✦ Medium Blog
+        </a>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="speaking-card" style="cursor:default">
+        <div class="card-icon">🎤</div>
+        <div>
+          <div class="card-title">Speaking Invitations</div>
+          <div class="card-sub">Schools, meetups, conferences, panels</div>
+        </div>
+      </div>
+      <div class="speaking-card" style="cursor:default">
+        <div class="card-icon">🤝</div>
+        <div>
+          <div class="card-title">Collaborations</div>
+          <div class="card-sub">RecSys projects, research, or just cool ideas</div>
+        </div>
+      </div>
+      <div class="speaking-card" style="cursor:default">
+        <div class="card-icon">💌</div>
+        <div>
+          <div class="card-title">Just Say Hi</div>
+          <div class="card-sub">Students, career questions, anything RecSys</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">recspert<span>✦</span></div>
+  <div class="footer-links">
+    <a href="https://medium.com/@becomingarecspert" target="_blank">Medium</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#fun">Fun Stuff</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div style="font-size:0.8rem;opacity:0.4;font-weight:700">© 2026 Ashwaq Salim · Made with ✦ & Python</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorDot = document.getElementById('cursorDot');
+  let mouseX = 0, mouseY = 0;
+  let curX = 0, curY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursorDot.style.left = mouseX + 'px';
+    cursorDot.style.top = mouseY + 'px';
+  });
+
+  function animateCursor() {
+    curX += (mouseX - curX) * 0.15;
+    curY += (mouseY - curY) * 0.15;
+    cursor.style.left = (curX - 10) + 'px';
+    cursor.style.top = (curY - 10) + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  document.querySelectorAll('a, button, .speaking-card, .project-card, .fun-card, .blog-post-preview, .persona-pill, .bookclub-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
+    el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Counter animation
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.innerHTML = Math.floor(current) + suffix;
+    }, 40);
+  }
+
+  const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll('[data-target]').forEach(animateCounter);
+        counterObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const counterEls = document.querySelectorAll('[data-target]');
+  if (counterEls.length) counterObserver.observe(counterEls[0]);
+
+  // WIP bar animation
+  const wipFill = document.getElementById('wipFill');
+  if (wipFill) {
+    const wipObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          wipFill.classList.add('animated');
+          wipObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+    wipObserver.observe(wipFill);
+  }
+
+  // Add sparkle on click
+  document.addEventListener('click', e => {
+    const sparkle = document.createElement('div');
+    sparkle.style.cssText = `
+      position:fixed;left:${e.clientX}px;top:${e.clientY}px;
+      pointer-events:none;z-index:9998;font-size:1.2rem;
+      animation:sparkleOut 0.6s ease forwards;
+    `;
+    sparkle.textContent = ['✦','★','✨','⭐'][Math.floor(Math.random()*4)];
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 600);
+  });
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes sparkleOut {
+      from { opacity:1; transform:translate(-50%,-50%) scale(1); }
+      to { opacity:0; transform:translate(-50%,-150%) scale(1.5); }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+</body>
+</html>
