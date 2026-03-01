@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>becoming a recspert ✦</title>
+<title>Becoming a RecSpert ✦</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -334,40 +334,69 @@
   .speaking-cards {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
   .speaking-card {
     background: var(--cream);
     border: 2px solid var(--black);
-    border-radius: 16px;
-    padding: 1.75rem 2rem;
+    border-radius: 18px;
+    padding: 2rem 2rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.5rem;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
     cursor: default;
+    position: relative;
+    overflow: hidden;
   }
+  .speaking-card::after {
+    content: '↗';
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.5rem;
+    font-size: 1rem;
+    opacity: 0;
+    transition: all 0.25s ease;
+    font-weight: 900;
+  }
+  .speaking-card:hover::after { opacity: 1; color: var(--gold); }
   .speaking-card:hover {
     background: var(--black);
     color: var(--cream);
-    transform: translateX(8px);
+    transform: translateX(6px);
+    border-color: var(--black);
   }
   .speaking-card:hover .card-icon { background: var(--gold); color: var(--black); }
+  .speaking-card:hover .card-sub { opacity: 0.65; }
   .card-icon {
-    width: 58px; height: 58px;
+    width: 64px; height: 64px;
     background: var(--black);
     color: var(--cream);
-    border-radius: 14px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.6rem;
+    font-size: 1.75rem;
     flex-shrink: 0;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
   }
-  .card-title { font-weight: 800; font-size: 1.05rem; margin-bottom: 0.3rem; }
-  .card-sub { font-size: 0.85rem; opacity: 0.65; font-weight: 600; line-height: 1.5; }
+  .card-text { flex: 1; }
+  .card-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 0.4rem; line-height: 1.2; }
+  .card-sub { font-size: 0.88rem; opacity: 0.6; font-weight: 600; line-height: 1.55; }
+  .card-tag {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--black);
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+  }
+  .speaking-card:hover .card-tag { background: var(--cream); color: var(--black); }
 
   /* Projects */
   #projects { background: var(--cream); }
@@ -662,35 +691,68 @@
   }
 
   /* Blog */
-  #blog { background: var(--black); color: var(--cream); border-top: 2px solid var(--black); }
+  /* ── BLOG SECTION ── */
+  #blog {
+    background: var(--black);
+    color: var(--cream);
+    border-top: 2px solid var(--black);
+    padding-bottom: 5rem;
+  }
   #blog .section-title { color: var(--cream); }
   #blog .section-label { color: var(--cream); opacity: 0.5; }
 
-  .blog-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
+  /* Ticker tape at top */
+  .blog-ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0.6rem 0;
+    margin-bottom: 3.5rem;
   }
+  .blog-ticker-inner {
+    display: inline-flex;
+    gap: 2.5rem;
+    animation: marquee 28s linear infinite;
+  }
+  .blog-ticker-inner span {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.45;
+  }
+  .blog-ticker-inner .tick-dot { color: var(--gold); opacity: 1; }
 
-  .blog-text p {
+  /* Header row */
+  .blog-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .blog-intro {
+    max-width: 480px;
+  }
+  .blog-intro p {
     font-size: 1.05rem;
     line-height: 1.8;
     font-weight: 600;
-    opacity: 0.8;
-    margin-bottom: 1.5rem;
+    opacity: 0.75;
+    margin-bottom: 1.25rem;
   }
-
   .medium-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
     background: var(--gold);
     color: var(--black);
-    padding: 1rem 2rem;
+    padding: 0.9rem 1.75rem;
     border-radius: 50px;
     font-weight: 900;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-decoration: none;
     transition: all 0.2s ease;
     cursor: none;
@@ -700,36 +762,235 @@
     box-shadow: 4px 4px 0 rgba(255,255,255,0.3);
   }
 
-  .blog-visual {
+  /* Filter pills */
+  .blog-filters {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .blog-filter-pill {
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--cream);
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+  }
+  .blog-filter-pill:hover,
+  .blog-filter-pill.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--black);
   }
 
-  .blog-post-preview {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 1.25rem;
-    transition: all 0.2s ease;
-    cursor: default;
+  /* Featured post */
+  .blog-featured {
+    position: relative;
+    background: linear-gradient(135deg, rgba(240,192,64,0.12) 0%, rgba(255,255,255,0.03) 100%);
+    border: 1.5px solid var(--gold);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    color: inherit;
   }
-  .blog-post-preview:hover {
-    background: rgba(240,192,64,0.1);
-    border-color: var(--gold);
-    transform: translateX(8px);
+  .blog-featured::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at top left, rgba(240,192,64,0.15) 0%, transparent 65%);
+    pointer-events: none;
   }
-  .blog-post-preview .post-cat {
-    font-size: 0.7rem;
+  .blog-featured:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(240,192,64,0.15); }
+  .blog-featured-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    margin-bottom: 1.25rem;
+  }
+  .blog-featured-cat {
+    font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.6rem;
+    opacity: 0.8;
   }
-  .blog-post-preview .post-title {
+  .blog-featured-title {
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.75rem;
+  }
+  .blog-featured-excerpt {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.65;
+    font-weight: 600;
+    max-width: 560px;
+    margin-bottom: 1.25rem;
+  }
+  .blog-featured-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    font-size: 0.95rem;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+  }
+  .blog-featured-arrow {
+    position: absolute;
+    top: 2.5rem; right: 2.5rem;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+  }
+  .blog-featured:hover .blog-featured-arrow {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--black);
+    transform: rotate(45deg);
+  }
+
+  /* Post grid */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .blog-card {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .blog-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .blog-card:hover::after { transform: scaleX(1); }
+  .blog-card:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(240,192,64,0.3);
+    transform: translateY(-5px);
+  }
+  .blog-card.hidden { display: none; }
+  .blog-card-cat {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .blog-card-title {
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .blog-card-meta {
+    font-size: 0.7rem;
+    font-weight: 700;
+    opacity: 0.4;
+    display: flex;
+    gap: 0.75rem;
+  }
+  .blog-card-arrow {
+    font-size: 0.8rem;
+    opacity: 0.35;
+    align-self: flex-end;
+    transition: all 0.2s;
+  }
+  .blog-card:hover .blog-card-arrow { opacity: 1; color: var(--gold); transform: translate(3px,-3px); }
+
+  .blog-coming-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(240,192,64,0.9);
+    border: 1.5px solid rgba(240,192,64,0.35);
+    padding: 0.2rem 0.65rem;
+    border-radius: 50px;
+  }
+  .blog-coming-tag::before { content: '⏳'; font-size: 0.7rem; }
+
+  /* Stats strip */
+  .blog-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    flex-wrap: wrap;
+  }
+  .blog-stat { text-align: center; }
+  .blog-stat-num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .blog-stat-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.45;
+  }
+
+  @media (max-width: 900px) {
+    .blog-grid { grid-template-columns: 1fr 1fr; }
+    .blog-header-row { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .blog-grid { grid-template-columns: 1fr; }
+    .blog-featured-arrow { display: none; }
+    .blog-stats { gap: 1.5rem; }
   }
 
   /* Fun */
@@ -956,7 +1217,7 @@
   @media (max-width: 900px) {
     .hero-deco { display: none; }
     .personal-layout { grid-template-columns: 1fr; }
-    .blog-content { grid-template-columns: 1fr; }
+    /* old blog-content removed */
     .counter-strip { gap: 2rem; }
   }
 
@@ -1001,7 +1262,7 @@
     .bookclub-features { grid-template-columns: 1fr; }
 
     /* blog */
-    .blog-content { grid-template-columns: 1fr; gap: 2rem; }
+    /* old blog-content removed */
 
     /* fun */
     .fun-grid { grid-template-columns: 1fr; }
@@ -1053,17 +1314,13 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.82);
     z-index: 5000;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    backdrop-filter: blur(4px);
-  }
-  @media (max-width: 600px) {
-    .modal-overlay { align-items: flex-end; padding: 0; }
-    .modal-box { border-radius: 24px 24px 0 0; max-height: 88vh; border-bottom: none; }
-    .modal-box.dark { border-bottom: none; }
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
   .modal-overlay.active { display: flex; }
 
@@ -1074,68 +1331,96 @@
     border: 3px solid var(--black);
     max-width: 680px;
     width: 100%;
-    max-height: 92vh;
+    max-height: 90vh;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
     animation: modalPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
-    box-shadow: 8px 8px 0 rgba(0,0,0,0.25);
-    display: flex;
-    flex-direction: column;
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.3);
+    -webkit-overflow-scrolling: touch;
   }
   .modal-box.dark {
-    background: var(--black);
+    background: #111;
     color: var(--cream);
     border-color: var(--gold);
+    box-shadow: 10px 10px 0 rgba(240,192,64,0.15);
   }
   @keyframes modalPop {
-    from { opacity:0; transform: scale(0.85) translateY(20px); }
+    from { opacity:0; transform: scale(0.88) translateY(24px); }
     to   { opacity:1; transform: scale(1) translateY(0); }
   }
 
+  /* Close button — absolute top-right, always visible, large touch target */
   .modal-close {
-    position: sticky;
-    top: 0.75rem;
-    float: right;
-    margin: 0.75rem 0.75rem 0 0;
-    width: 40px; height: 40px;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    border: 2px solid currentColor;
+    border: 2px solid rgba(0,0,0,0.2);
     background: var(--cream);
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s;
     color: var(--black);
-    z-index: 10;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   .modal-box.dark .modal-close {
-    background: var(--black);
+    background: #222;
     color: var(--cream);
     border-color: var(--gold);
   }
-  .modal-close:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .modal-close:hover,
+  .modal-close:active { background: var(--gold); border-color: var(--gold); color: var(--black); transform: scale(1.1); }
 
   .modal-header {
-    padding: 1.25rem 2rem 0 2rem;
-    border-bottom: 2px solid currentColor;
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.5rem;
-    clear: both;
+    padding: 1.75rem 4.5rem 1.25rem 2rem;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    margin-bottom: 0;
   }
+  .modal-box.dark .modal-header { border-color: rgba(255,255,255,0.1); }
   .modal-header .modal-badge {
     font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold);
     margin-bottom: 0.5rem;
+    display: block;
   }
-  .modal-box.dark .modal-header { border-color: rgba(255,255,255,0.15); }
-  .modal-title { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; }
-  .modal-body { padding: 0 2rem 2rem; }
+  .modal-title { font-size: 1.55rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1.2; margin: 0; }
+  .modal-body { padding: 1.75rem 2rem 2rem; }
+
+  /* Mobile: slide-up bottom sheet */
+  @media (max-width: 640px) {
+    .modal-overlay { align-items: flex-end; padding: 0; }
+    .modal-box {
+      border-radius: 20px 20px 0 0;
+      max-height: 91vh;
+      border-bottom: none;
+      border-left: none;
+      border-right: none;
+      box-shadow: 0 -4px 40px rgba(0,0,0,0.4);
+      animation: modalSlideUp 0.3s cubic-bezier(0.32,0.72,0,1) both;
+    }
+    .modal-box.dark { box-shadow: 0 -4px 40px rgba(240,192,64,0.1); }
+    @keyframes modalSlideUp {
+      from { transform: translateY(100%); opacity: 0.85; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .modal-close { top: 0.85rem; right: 0.85rem; width: 42px; height: 42px; font-size: 0.95rem; }
+    .modal-header { padding: 1.25rem 3.75rem 1rem 1.25rem; }
+    .modal-title { font-size: 1.2rem; }
+    .modal-body { padding: 1.25rem 1.25rem 2.5rem; }
+  }
 
   /* Pseudocode block */
   .pseudocode {
@@ -1248,12 +1533,8 @@
   .contact-speaking-card { cursor: pointer; }
 
   @media (max-width: 768px) {
-    .modal-box { border-radius: 16px; }
-    .modal-header { padding: 1.5rem 1.5rem 1rem; }
-    .modal-body { padding: 0 1.5rem 1.5rem; }
-    .modal-title { font-size: 1.3rem; }
-    .pseudocode { font-size: 0.7rem; padding: 1rem; }
     .hero-avatar { width: 90px; height: 90px; }
+    .pseudocode { font-size: 0.7rem; padding: 1rem; }
   }
 
 
@@ -1365,6 +1646,49 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--black);
+    padding: 0;
+    overflow: hidden;
+  }
+  .section-divider-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold) 40%, var(--gold) 60%, transparent);
+    opacity: 0.5;
+  }
+  .section-divider:first-child .section-divider-line { background: linear-gradient(90deg, var(--black), var(--gold)); }
+  .section-divider-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--black);
+    padding: 1.1rem 2rem;
+    border-left: 2px solid rgba(240,192,64,0.3);
+    border-right: 2px solid rgba(240,192,64,0.3);
+    white-space: nowrap;
+  }
+  .divider-text {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.5;
+  }
+  .divider-star {
+    color: var(--gold);
+    font-size: 0.8rem;
+    animation: spin 8s linear infinite;
+    display: inline-block;
+  }
+  .divider-star:last-child { animation-direction: reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ── CUSTOM SCROLLBAR ── */
   ::-webkit-scrollbar { width: 8px; }
@@ -1556,29 +1880,31 @@
     </div>
 
     <div class="speaking-cards">
-      <div style="font-weight:800;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:0.5rem">✦ Speaking & Community <span style="font-size:0.65rem;opacity:0.7">· tap to learn more</span></div>
+      <div style="font-weight:800;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:0.75rem">✦ Speaking & Community <span style="font-size:0.65rem;opacity:0.7">· tap to learn more</span></div>
       <div class="speaking-card" onclick="openModal('speak1')">
         <div class="card-icon">🎓</div>
-        <div>
+        <div class="card-text">
           <div class="card-title">Schools, Colleges & Outreach</div>
-          <div class="card-sub">Cajigo, BCS Institute, school outreach — showcasing the RecSys industry</div>
+          <div class="card-sub">Speaking at Cajigo, BCS Institute and school outreach programmes — bringing the RecSys industry into classrooms and showcasing data science as a career path.</div>
+          <span class="card-tag">Education · Outreach</span>
         </div>
       </div>
       <div class="speaking-card" onclick="openModal('speak2')">
         <div class="card-icon">🐝</div>
-        <div>
+        <div class="card-text">
           <div class="card-title">Manchester Meetups</div>
-          <div class="card-sub">Building the local tech community</div>
+          <div class="card-sub">Active in Manchester's thriving tech scene — speaking at local meetups covering RecSys, ML engineering and early career journeys.</div>
+          <span class="card-tag">Manchester · Tech Community</span>
         </div>
       </div>
       <div class="speaking-card" onclick="openModal('speak3')">
         <div class="card-icon">📖</div>
-        <div>
+        <div class="card-text">
           <div class="card-title">Early Career Journeys</div>
-          <div class="card-sub">Demystifying data science for beginners</div>
+          <div class="card-sub">Demystifying data science for people just starting out — honest talks about breaking into the industry, imposter syndrome, and what nobody tells you.</div>
+          <span class="card-tag">Career · Mentoring</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1721,38 +2047,129 @@
 </section>
 
 <!-- Section divider -->
-<div style="height:4px;background:linear-gradient(90deg,var(--gold) 0%,var(--black) 40%,var(--gold) 100%);border:none;opacity:0.85;"></div>
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-badge">
+    <span class="divider-star">✦</span>
+    <span class="divider-text">writing</span>
+    <span class="divider-star">✦</span>
+  </div>
+  <div class="section-divider-line"></div>
+</div>
 
 <!-- Blog -->
 <section id="blog">
   <div class="section-label">✦ writing</div>
   <h2 class="section-title">The Blog</h2>
 
-  <div class="blog-content reveal">
-    <div class="blog-text">
-      <p>I write about all things recommender systems on Medium — from beginner-friendly explainers to deep dives into collaborative filtering, embeddings, and production ML.</p>
-      <p>If you're on a journey to understand RecSys, come join the community of <strong>RecSperts-in-training</strong>.</p>
+  <!-- Ticker -->
+  <div class="blog-ticker">
+    <div class="blog-ticker-inner">
+      <span>Collaborative Filtering</span><span class="tick-dot">✦</span>
+      <span>RecSys Deep Dives</span><span class="tick-dot">✦</span>
+      <span>ML Engineering</span><span class="tick-dot">✦</span>
+      <span>Embeddings & Vectors</span><span class="tick-dot">✦</span>
+      <span>Career in Data Science</span><span class="tick-dot">✦</span>
+      <span>Production ML</span><span class="tick-dot">✦</span>
+      <span>Beginner Explainers</span><span class="tick-dot">✦</span>
+      <span>@becomingarecspert</span><span class="tick-dot">✦</span>
+      <!-- duplicate for seamless loop -->
+      <span>Collaborative Filtering</span><span class="tick-dot">✦</span>
+      <span>RecSys Deep Dives</span><span class="tick-dot">✦</span>
+      <span>ML Engineering</span><span class="tick-dot">✦</span>
+      <span>Embeddings & Vectors</span><span class="tick-dot">✦</span>
+      <span>Career in Data Science</span><span class="tick-dot">✦</span>
+      <span>Production ML</span><span class="tick-dot">✦</span>
+      <span>Beginner Explainers</span><span class="tick-dot">✦</span>
+      <span>@becomingarecspert</span><span class="tick-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- Header row: intro + filters -->
+  <div class="blog-header-row reveal">
+    <div class="blog-intro">
+      <p>I write about all things recommender systems on Medium — from beginner-friendly explainers to deep dives into collaborative filtering, embeddings, and production ML. Come join the community of <strong style="color:var(--cream);opacity:1">RecSperts-in-training</strong>.</p>
       <a href="https://medium.com/@becomingarecspert" target="_blank" class="medium-btn">
         <span>✦</span> @becomingarecspert on Medium
       </a>
     </div>
+    <div class="blog-filters" id="blogFilters">
+      <button class="blog-filter-pill active" data-filter="all">All Posts</button>
+      <button class="blog-filter-pill" data-filter="recsys">RecSys</button>
+      <button class="blog-filter-pill" data-filter="ml">ML Engineering</button>
+      <button class="blog-filter-pill" data-filter="career">Career</button>
+    </div>
+  </div>
 
-    <div class="blog-visual">
-      <div class="blog-post-preview">
-        <div class="post-cat">Recommender Systems</div>
-        <div class="post-title">What even is Collaborative Filtering? A beginner's guide</div>
-      </div>
-      <div class="blog-post-preview">
-        <div class="post-cat">ML Engineering</div>
-        <div class="post-title">TF-IDF vs Word2Vec: Which wins for recommendations?</div>
-      </div>
-      <div class="blog-post-preview">
-        <div class="post-cat">Career</div>
-        <div class="post-title">My journey: from student to RecSys engineer</div>
-      </div>
-      <div class="blog-post-preview" style="text-align:center;border-style:dashed;opacity:0.5">
-        <div class="post-title">+ more on Medium →</div>
-      </div>
+  <!-- Featured post — REAL article -->
+  <a href="https://becomingarecspert.medium.com/tldr-what-on-earth-is-a-recommender-system-the-girl-in-the-green-scarf-explanation-d45b8a12ca93" target="_blank" class="blog-featured reveal" data-category="recsys">
+    <div class="blog-featured-badge">⭐ Published · Read Now</div>
+    <div class="blog-featured-cat">Recommender Systems</div>
+    <div class="blog-featured-title">TL;DR — What on Earth is a Recommender System?<br><span style="font-size:0.8em;opacity:0.75">The Girl in the Green Scarf explanation</span></div>
+    <div class="blog-featured-excerpt">Never quite understood what a recommender system actually does? This post uses a story — the girl in the green scarf — to explain it in a way that actually sticks. No maths required. Just vibes and logic.</div>
+    <div class="blog-featured-meta">
+      <span>✦ Live on Medium</span>
+      <span>·</span>
+      <span>Recommender Systems</span>
+      <span>·</span>
+      <span>Beginner friendly</span>
+    </div>
+    <div class="blog-featured-arrow">↗</div>
+  </a>
+
+  <!-- Post grid — coming soon cards open popups -->
+  <div class="blog-grid reveal" id="blogGrid">
+    <div class="blog-card" data-category="ml" onclick="openModal('blog-tfidf')">
+      <div class="blog-card-cat">ML Engineering</div>
+      <div class="blog-card-title">TF-IDF vs Word2Vec: Which actually wins for recommendations?</div>
+      <div class="blog-card-meta"><span class="blog-coming-tag">Coming soon</span></div>
+      <div class="blog-card-arrow">↗</div>
+    </div>
+    <div class="blog-card" data-category="career" onclick="openModal('blog-journey')">
+      <div class="blog-card-cat">Career</div>
+      <div class="blog-card-title">My journey: from student to RecSys engineer at scale</div>
+      <div class="blog-card-meta"><span class="blog-coming-tag">Coming soon</span></div>
+      <div class="blog-card-arrow">↗</div>
+    </div>
+    <div class="blog-card" data-category="recsys" onclick="openModal('blog-coldstart')">
+      <div class="blog-card-cat">Recommender Systems</div>
+      <div class="blog-card-title">The cold-start problem: why new users break your model</div>
+      <div class="blog-card-meta"><span class="blog-coming-tag">Coming soon</span></div>
+      <div class="blog-card-arrow">↗</div>
+    </div>
+    <div class="blog-card" data-category="ml" onclick="openModal('blog-eval')">
+      <div class="blog-card-cat">ML Engineering</div>
+      <div class="blog-card-title">Offline evaluation for RecSys: metrics that actually matter</div>
+      <div class="blog-card-meta"><span class="blog-coming-tag">Coming soon</span></div>
+      <div class="blog-card-arrow">↗</div>
+    </div>
+    <div class="blog-card" data-category="recsys" onclick="openModal('blog-neural')">
+      <div class="blog-card-cat">Recommender Systems</div>
+      <div class="blog-card-title">Neural collaborative filtering: when deep learning meets RecSys</div>
+      <div class="blog-card-meta"><span class="blog-coming-tag">Coming soon</span></div>
+      <div class="blog-card-arrow">↗</div>
+    </div>
+    <a href="https://becomingarecspert.medium.com" target="_blank" class="blog-card" data-category="career" style="background:rgba(240,192,64,0.06);border-color:rgba(240,192,64,0.2);">
+      <div class="blog-card-cat" style="opacity:0.5">Follow on Medium</div>
+      <div class="blog-card-title" style="opacity:0.6">Get notified when new posts drop →</div>
+      <div class="blog-card-meta"><span>@becomingarecspert</span></div>
+      <div class="blog-card-arrow">↗</div>
+    </a>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="blog-stats reveal">
+    <div class="blog-stat">
+      <span class="blog-stat-num">1</span>
+      <span class="blog-stat-label">Published</span>
+    </div>
+    <div class="blog-stat">
+      <span class="blog-stat-num">5+</span>
+      <span class="blog-stat-label">In the works</span>
+    </div>
+    <div class="blog-stat">
+      <span class="blog-stat-num">∞</span>
+      <span class="blog-stat-label">RecSperts in training</span>
     </div>
   </div>
 </section>
@@ -2262,6 +2679,132 @@
   </div>
 </div>
 
+<!-- BLOG MODALS: Coming Soon posts -->
+<div class="modal-overlay" id="modal-blog-tfidf">
+  <div class="modal-box dark">
+    <button class="modal-close" onclick="closeModal('blog-tfidf')">✕</button>
+    <div class="modal-header">
+      <div class="modal-badge">ML Engineering · To Be Confirmed</div>
+      <h2 class="modal-title">TF-IDF vs Word2Vec: Which actually wins for recommendations?</h2>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1.5rem;padding:1rem 1.25rem;background:rgba(240,192,64,0.08);border:1.5px solid rgba(240,192,64,0.25);border-radius:12px;">
+        <span style="font-size:1.4rem">⏳</span>
+        <div>
+          <div style="font-weight:900;font-size:0.85rem;color:var(--gold);margin-bottom:0.2rem;">Coming soon</div>
+          <div style="font-size:0.8rem;opacity:0.65;font-weight:600;">This article is in the works. Follow on Medium to get notified when it drops.</div>
+        </div>
+      </div>
+      <p style="line-height:1.8;font-weight:600;opacity:0.8;margin-bottom:1rem;">Two of the most widely-used techniques for content-based recommendation — but which one actually delivers better results in production? This post will break down both approaches from first principles, test them head-to-head on a real dataset, and explain when to use each.</p>
+      <p style="line-height:1.8;font-weight:600;opacity:0.6;margin-bottom:1.5rem;">Topics planned: TF-IDF weighting, Word2Vec embeddings, cosine similarity, real benchmarks, hybrid approaches.</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="tag">TF-IDF</span><span class="tag">Word2Vec</span><span class="tag">Embeddings</span><span class="tag">RecSys</span>
+      </div>
+      <a href="https://becomingarecspert.medium.com" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-weight:900;color:var(--gold);font-size:0.9rem;text-decoration:none;">Follow @becomingarecspert to be notified ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-blog-journey">
+  <div class="modal-box dark">
+    <button class="modal-close" onclick="closeModal('blog-journey')">✕</button>
+    <div class="modal-header">
+      <div class="modal-badge">Career · To Be Confirmed</div>
+      <h2 class="modal-title">My journey: from student to RecSys engineer at scale</h2>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1.5rem;padding:1rem 1.25rem;background:rgba(240,192,64,0.08);border:1.5px solid rgba(240,192,64,0.25);border-radius:12px;">
+        <span style="font-size:1.4rem">⏳</span>
+        <div>
+          <div style="font-weight:900;font-size:0.85rem;color:var(--gold);margin-bottom:0.2rem;">Coming soon</div>
+          <div style="font-size:0.8rem;opacity:0.65;font-weight:600;">This article is in the works. Follow on Medium to get notified when it drops.</div>
+        </div>
+      </div>
+      <p style="line-height:1.8;font-weight:600;opacity:0.8;margin-bottom:1rem;">The honest, unfiltered version of breaking into data science — the stuff nobody puts in their LinkedIn post. From university confusion to building recommender systems serving 14 million customers in production.</p>
+      <p style="line-height:1.8;font-weight:600;opacity:0.6;margin-bottom:1.5rem;">Topics planned: breaking into DS, imposter syndrome, what early career actually looks like, transitioning into RecSys, advice I wish I'd had.</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="tag">Career</span><span class="tag">Early Career</span><span class="tag">Data Science</span><span class="tag">RecSys</span>
+      </div>
+      <a href="https://becomingarecspert.medium.com" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-weight:900;color:var(--gold);font-size:0.9rem;text-decoration:none;">Follow @becomingarecspert to be notified ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-blog-coldstart">
+  <div class="modal-box dark">
+    <button class="modal-close" onclick="closeModal('blog-coldstart')">✕</button>
+    <div class="modal-header">
+      <div class="modal-badge">Recommender Systems · To Be Confirmed</div>
+      <h2 class="modal-title">The cold-start problem: why new users break your model</h2>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1.5rem;padding:1rem 1.25rem;background:rgba(240,192,64,0.08);border:1.5px solid rgba(240,192,64,0.25);border-radius:12px;">
+        <span style="font-size:1.4rem">⏳</span>
+        <div>
+          <div style="font-weight:900;font-size:0.85rem;color:var(--gold);margin-bottom:0.2rem;">Coming soon</div>
+          <div style="font-size:0.8rem;opacity:0.65;font-weight:600;">This article is in the works. Follow on Medium to get notified when it drops.</div>
+        </div>
+      </div>
+      <p style="line-height:1.8;font-weight:600;opacity:0.8;margin-bottom:1rem;">Every recommender system has the same villain: the new user who has no history. No clicks. No ratings. No signal. This post digs into why cold-start is so hard, and the strategies engineers actually use to solve it.</p>
+      <p style="line-height:1.8;font-weight:600;opacity:0.6;margin-bottom:1.5rem;">Topics planned: user cold-start vs item cold-start, onboarding strategies, content-based fallbacks, popularity bias, hybrid solutions.</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="tag">Cold Start</span><span class="tag">Collaborative Filtering</span><span class="tag">RecSys</span><span class="tag">Production</span>
+      </div>
+      <a href="https://becomingarecspert.medium.com" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-weight:900;color:var(--gold);font-size:0.9rem;text-decoration:none;">Follow @becomingarecspert to be notified ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-blog-eval">
+  <div class="modal-box dark">
+    <button class="modal-close" onclick="closeModal('blog-eval')">✕</button>
+    <div class="modal-header">
+      <div class="modal-badge">ML Engineering · To Be Confirmed</div>
+      <h2 class="modal-title">Offline evaluation for RecSys: metrics that actually matter</h2>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1.5rem;padding:1rem 1.25rem;background:rgba(240,192,64,0.08);border:1.5px solid rgba(240,192,64,0.25);border-radius:12px;">
+        <span style="font-size:1.4rem">⏳</span>
+        <div>
+          <div style="font-weight:900;font-size:0.85rem;color:var(--gold);margin-bottom:0.2rem;">Coming soon</div>
+          <div style="font-size:0.8rem;opacity:0.65;font-weight:600;">This article is in the works. Follow on Medium to get notified when it drops.</div>
+        </div>
+      </div>
+      <p style="line-height:1.8;font-weight:600;opacity:0.8;margin-bottom:1rem;">Accuracy is not the metric you think it is. This post cuts through the confusion around RecSys evaluation — Precision@K, Recall@K, NDCG, MRR — and explains what each one actually tells you about your model's behaviour.</p>
+      <p style="line-height:1.8;font-weight:600;opacity:0.6;margin-bottom:1.5rem;">Topics planned: Precision@K, Recall@K, NDCG, MRR, coverage & diversity, the limits of offline metrics, how to pick the right one for your use case.</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="tag">Evaluation</span><span class="tag">NDCG</span><span class="tag">Metrics</span><span class="tag">ML Engineering</span>
+      </div>
+      <a href="https://becomingarecspert.medium.com" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-weight:900;color:var(--gold);font-size:0.9rem;text-decoration:none;">Follow @becomingarecspert to be notified ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-blog-neural">
+  <div class="modal-box dark">
+    <button class="modal-close" onclick="closeModal('blog-neural')">✕</button>
+    <div class="modal-header">
+      <div class="modal-badge">Recommender Systems · To Be Confirmed</div>
+      <h2 class="modal-title">Neural collaborative filtering: when deep learning meets RecSys</h2>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1.5rem;padding:1rem 1.25rem;background:rgba(240,192,64,0.08);border:1.5px solid rgba(240,192,64,0.25);border-radius:12px;">
+        <span style="font-size:1.4rem">⏳</span>
+        <div>
+          <div style="font-weight:900;font-size:0.85rem;color:var(--gold);margin-bottom:0.2rem;">Coming soon</div>
+          <div style="font-size:0.8rem;opacity:0.65;font-weight:600;">This article is in the works. Follow on Medium to get notified when it drops.</div>
+        </div>
+      </div>
+      <p style="line-height:1.8;font-weight:600;opacity:0.8;margin-bottom:1rem;">Traditional collaborative filtering uses dot products. Neural CF replaces that with a neural network — and the results are striking. This post explains why, how, and when you'd actually want to make that trade-off.</p>
+      <p style="line-height:1.8;font-weight:600;opacity:0.6;margin-bottom:1.5rem;">Topics planned: matrix factorisation vs NCF, embedding layers, MLP architecture, training on implicit feedback, trade-offs vs classical approaches.</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="tag">Neural CF</span><span class="tag">Deep Learning</span><span class="tag">Embeddings</span><span class="tag">RecSys</span>
+      </div>
+      <a href="https://becomingarecspert.medium.com" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-weight:900;color:var(--gold);font-size:0.9rem;text-decoration:none;">Follow @becomingarecspert to be notified ↗</a>
+    </div>
+  </div>
+</div>
+
 <!-- Footer -->
 <footer>
   <div class="footer-logo">recspert<span>✦</span></div>
@@ -2400,6 +2943,29 @@
       }
     }, 100);
   }
+  // ── BLOG FILTERS ──
+  const filterBtns = document.querySelectorAll('.blog-filter-pill');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      document.querySelectorAll('#blogGrid .blog-card').forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.classList.remove('hidden');
+          card.style.animation = 'none';
+          requestAnimationFrame(() => { card.style.animation = 'fadeSlideUp 0.3s ease both'; });
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      // always show the "see all" last card
+      const last = document.querySelector('#blogGrid .blog-card:last-child');
+      if (last) last.classList.remove('hidden');
+    });
+  });
+
   function updateCounter(textarea, counterId) {
     const len = textarea.value.length;
     const max = parseInt(textarea.getAttribute('maxlength')) || 150;
